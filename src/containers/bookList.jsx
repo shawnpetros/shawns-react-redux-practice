@@ -1,21 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React from 'react'
+import { connect } from 'react-redux'
+import { selectBook } from '../actions'
 
-const renderList = books => books.map(book => <li key={book.title} className="list-group-item">{ book.title }</li>);
+selectBook({ title: 'aha!' })
 
-const BookList = ({ books }) => (
-  <ul className="list-group col-sm-4">
-    {renderList(books)}
+const renderList = ({ books, selectBook }) => books.map(book => <a key={book.title} onClick={() => selectBook(book)}><li key={book.title} className='list-group-item'>{ book.title }</li></a>)
+
+const BookList = ({ books, selectBook }) => (
+  <ul className='list-group col-sm-4'>
+    {renderList({ books, selectBook })}
   </ul>
-);
-
-BookList.propTypes = {
-  books: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
+)
 
 const mapStateToProps = ({ books }) => ({
-  books,
-});
+  books
+})
 
-export default connect(mapStateToProps)(BookList);
+export default connect(mapStateToProps, { selectBook })(BookList)

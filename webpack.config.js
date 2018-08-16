@@ -1,30 +1,31 @@
+const path = require('path')
+const webpack = require('webpack')
+
 module.exports = {
-  entry: ['./src/index.jsx'],
+  entry: './src/index.jsx',
   output: {
-    path: __dirname,
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: 'bundle.js',
+    filename: 'bundle.js'
   },
+  devtool: 'inline-source-map',
+  devServer: {
+    contentBase: './',
+    hot: true
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ],
   module: {
-    loaders: [
+    rules: [
       {
+        test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          presets: ['react', 'es2015', 'stage-1'],
-        },
-      },
-    ],
+        use: ['babel-loader']
+      }
+    ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
-  },
-  devServer: {
-    historyApiFallback: true,
-    contentBase: './',
-    watchOptions: {
-      aggregateTimeout: 300,
-      poll: 1000,
-    },
-  },
-};
+    extensions: ['.js', '.jsx']
+  }
+}
